@@ -7,19 +7,41 @@ import ru.strelchm.htmlstat.api.DocumentParser;
 import ru.strelchm.htmlstat.api.DocumentStatProcessingException;
 import ru.strelchm.htmlstat.api.StatisticsPrinter;
 import ru.strelchm.htmlstat.db.model.HtmlParsingSession;
+import ru.strelchm.htmlstat.db.repo.HtmlSessionRepository;
+import ru.strelchm.htmlstat.db.repo.WordRepository;
 import ru.strelchm.htmlstat.parser.HtmlDocumentLoader;
 import ru.strelchm.htmlstat.parser.JsoupHtmlParser;
 import ru.strelchm.htmlstat.parser.ParsingStatisticsPrinter;
-import ru.strelchm.htmlstat.db.repo.HtmlSessionRepository;
-import ru.strelchm.htmlstat.db.repo.WordRepository;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class App {
     public static final Logger GLOBAL_LOGGER = Logger.getGlobal();
     public static final Logger MAIN_LOGGER = Logger.getLogger(App.class.getName());
+
+    static {
+        File logDir = new File("logs");
+
+        if (!logDir.exists()){
+            logDir.mkdirs();
+        }
+
+        try (FileInputStream ins = new FileInputStream("log.config")) {
+            LogManager.getLogManager().readConfiguration(ins);
+
+//            FileHandler fileHandler = new FileHandler("app.log", true);
+//            GLOBAL_LOGGER.addHandler(fileHandler);
+//            MAIN_LOGGER.addHandler(fileHandler);
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         AppMode mode;

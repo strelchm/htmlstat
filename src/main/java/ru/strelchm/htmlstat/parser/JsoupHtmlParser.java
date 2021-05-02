@@ -46,8 +46,6 @@ public class JsoupHtmlParser implements DocumentParser {
     }
 
     private void getTextFromElement(Session session, Node element) {
-//        int index = 0;
-
         for (Node child : element.childNodes()) {
             if (child instanceof TextNode) {
                 String trimmedText = ((TextNode) child).text().trim();
@@ -55,16 +53,10 @@ public class JsoupHtmlParser implements DocumentParser {
                 if (!trimmedText.isEmpty()) {
                     for (String s : trimmedText.split(DELIMITERS)) {
                         if (!s.isEmpty()) {
-//                            ++index;
                             Word word = new Word();
                             word.setText(s);
                             word.setHtmlParsingSession(parsingSession);
                             wordRepository.save(session, word);
-
-//                            if (index % 20 == 0) {
-//                                session.flush();
-//                                session.clear();
-//                            }
                         }
                     }
                 }
