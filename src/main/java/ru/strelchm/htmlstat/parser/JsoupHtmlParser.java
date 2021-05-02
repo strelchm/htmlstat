@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import ru.strelchm.htmlstat.api.HtmlParser;
+import ru.strelchm.htmlstat.api.DocumentParser;
 import ru.strelchm.htmlstat.model.HtmlParsingSession;
 import ru.strelchm.htmlstat.model.Word;
 import ru.strelchm.htmlstat.repository.WordRepository;
@@ -13,7 +13,7 @@ import ru.strelchm.htmlstat.repository.WordRepository;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class JsoupHtmlParser implements HtmlParser {
+public class JsoupHtmlParser implements DocumentParser {
     public static final String DELIMITERS = "[ ,.!?\'\";:()\n\r\t\\[\\]]";
 
     private HtmlParsingSession parsingSession;

@@ -2,6 +2,9 @@ package ru.strelchm.htmlstat;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.strelchm.htmlstat.api.DocumentLoader;
+import ru.strelchm.htmlstat.api.DocumentParser;
+import ru.strelchm.htmlstat.api.StatisticsPrinter;
 import ru.strelchm.htmlstat.model.HtmlParsingSession;
 import ru.strelchm.htmlstat.parser.JsoupHtmlParser;
 import ru.strelchm.htmlstat.repository.HtmlSessionRepository;
@@ -11,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 public class Main {
-    public static final Logger LOGGER = Logger.getGlobal();
+    public static final Logger GLOBAL_LOGGER = Logger.getGlobal();
 
     public static void main(String[] args) {
         String url = "https://www.simbirsoft.com/";
@@ -27,15 +30,14 @@ public class Main {
         htmlSessionRepository.save(htmlParsingSession);
 
         try {
-            DocumentLoader loader = new DocumentLoader();
-            JsoupHtmlParser htmlParser = new JsoupHtmlParser(htmlParsingSession, wordRepository);
+            DocumentLoader loader = new HtmlDocumentLoader();
+            DocumentParser htmlParser = new JsoupHtmlParser(htmlParsingSession, wordRepository);
             htmlParser.parse(loader.getInputStreamFromUrl(url), url);
 
-
-
-
+            StatisticsPrinter statisticsPrinter = new ParsingStatisticsPrinter(wordRepository);
+            statisticsPrinter.print(htmlParsingSession);
         } catch (Exception exception) {
-            LOGGER.severe(exception.getMessage());
+            GLOBAL_LOGGER.severe(exception.getMessage());
             exception.printStackTrace();
         }
     }

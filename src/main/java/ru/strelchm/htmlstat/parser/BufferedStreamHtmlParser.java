@@ -1,6 +1,6 @@
 package ru.strelchm.htmlstat.parser;
 
-import ru.strelchm.htmlstat.api.HtmlParser;
+import ru.strelchm.htmlstat.api.DocumentParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Deprecated
-public class BufferedStreamHtmlParser implements HtmlParser {
+public class BufferedStreamHtmlParser implements DocumentParser {
     @Override
     @Deprecated
     public void parse(InputStream inputStream, String url) throws IOException {
