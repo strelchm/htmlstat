@@ -8,9 +8,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import ru.strelchm.htmlstat.api.DocumentParser;
-import ru.strelchm.htmlstat.model.HtmlParsingSession;
-import ru.strelchm.htmlstat.model.Word;
-import ru.strelchm.htmlstat.repository.WordRepository;
+import ru.strelchm.htmlstat.db.model.HtmlParsingSession;
+import ru.strelchm.htmlstat.db.model.Word;
+import ru.strelchm.htmlstat.db.repo.WordRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,9 +18,9 @@ import java.io.InputStream;
 public class JsoupHtmlParser implements DocumentParser {
     public static final String DELIMITERS = "[ ,.!?\'\";:()\n\r\t\\[\\]]";
 
-    private SessionFactory sessionFactory;
-    private HtmlParsingSession parsingSession;
-    private WordRepository wordRepository;
+    private final SessionFactory sessionFactory;
+    private final HtmlParsingSession parsingSession;
+    private final WordRepository wordRepository;
 
     public JsoupHtmlParser(SessionFactory sessionFactory, HtmlParsingSession parsingSession, WordRepository wordRepository) {
         this.sessionFactory = sessionFactory;

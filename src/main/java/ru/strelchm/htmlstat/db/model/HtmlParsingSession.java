@@ -1,14 +1,8 @@
-package ru.strelchm.htmlstat.model;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+package ru.strelchm.htmlstat.db.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "parsing_sessions")
