@@ -1,5 +1,7 @@
 package ru.strelchm.htmlstat.parser;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,10 +18,12 @@ import java.io.InputStream;
 public class JsoupHtmlParser implements DocumentParser {
     public static final String DELIMITERS = "[ ,.!?\'\";:()\n\r\t\\[\\]]";
 
+    private SessionFactory sessionFactory;
     private HtmlParsingSession parsingSession;
     private WordRepository wordRepository;
 
-    public JsoupHtmlParser(HtmlParsingSession parsingSession, WordRepository wordRepository) {
+    public JsoupHtmlParser(SessionFactory sessionFactory, HtmlParsingSession parsingSession, WordRepository wordRepository) {
+        this.sessionFactory = sessionFactory;
         this.parsingSession = parsingSession;
         this.wordRepository = wordRepository;
     }
@@ -28,12 +32,22 @@ public class JsoupHtmlParser implements DocumentParser {
         Document doc = Jsoup.parse(inputStream, null, url);
         Element body = doc.body();
 
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
         for (Node child : body.childNodes()) {
-            getTextFromElement(child);
+            getTextFromElement(session, child);
         }
+
+        session.flush();
+
+        session.getTransaction().commit();
+        session.close();
     }
 
-    private void getTextFromElement(Node element) {
+    private void getTextFromElement(Session session, Node element) {
+//        int index = 0;
+
         for (Node child : element.childNodes()) {
             if (child instanceof TextNode) {
                 String trimmedText = ((TextNode) child).text().trim();
@@ -41,17 +55,23 @@ public class JsoupHtmlParser implements DocumentParser {
                 if (!trimmedText.isEmpty()) {
                     for (String s : trimmedText.split(DELIMITERS)) {
                         if (!s.isEmpty()) {
+//                            ++index;
                             Word word = new Word();
                             word.setText(s);
                             word.setHtmlParsingSession(parsingSession);
-                            wordRepository.save(word);
+                            wordRepository.save(session, word);
+
+//                            if (index % 20 == 0) {
+//                                session.flush();
+//                                session.clear();
+//                            }
                         }
                     }
                 }
             }
 
             if (child instanceof Element) {
-                getTextFromElement(child);
+                getTextFromElement(session, child);
             }
         }
     }

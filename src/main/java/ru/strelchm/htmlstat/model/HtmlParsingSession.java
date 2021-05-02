@@ -1,16 +1,24 @@
 package ru.strelchm.htmlstat.model;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "parsing_session")
+@Table(name = "parsing_sessions")
 public class HtmlParsingSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String url;
     private LocalDateTime parsedTime;
+
     @OneToMany(mappedBy = "htmlParsingSession", cascade = {CascadeType.ALL})
     private List<Word> words;
 
@@ -20,6 +28,14 @@ public class HtmlParsingSession {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public LocalDateTime getParsedTime() {
