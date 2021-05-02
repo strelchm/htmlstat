@@ -14,6 +14,7 @@ import ru.strelchm.htmlstat.repository.HtmlSessionRepository;
 import ru.strelchm.htmlstat.repository.WordRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Main {
@@ -22,6 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
         AppMode mode;
+        String url;
 
         try {
             if(args.length < 1) {
@@ -46,7 +48,7 @@ public class Main {
                         throw new ParserException("Url input parameter not found");
                     }
 
-                    String url = args[1];
+                    url = args[1];
 
                     // создаем сеанс парсинга
                     HtmlParsingSession htmlParsingSession = new HtmlParsingSession();
@@ -65,7 +67,13 @@ public class Main {
 
                     break;
                 case CLEAR:
+                    if(args.length < 2) {
+                        throw new ParserException("Url input parameter not found");
+                    }
 
+                    url = args[1];
+
+                    htmlSessionRepository.removeAllByUrl(url);
                     break;
                 default:
                     throw new ParserException("Unknown parsing mode '" + mode.name() + "'");
