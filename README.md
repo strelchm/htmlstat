@@ -18,6 +18,7 @@ Statistics text parsing (unique text entry) of html document to DB. Apllication 
 - Hibernate
 - JSoup
 - JUnit
+- 
 At first own html parsing was startes to coding but later the ready choice of Jsoup was choosing. Hibernate was 
 
 1. **DB creating.** By default, PostgreSQL is configured, but driver can be changed. Example for creating PostgreSQL DB from psql:
