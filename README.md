@@ -39,7 +39,7 @@ mvn package
 ```
 After packaging procces jar-file will be created in target folder. This is "fat JAR", so no depenencies libs needed for launching app
 
-4. **Starting app.** All modes have two arguments - mode key and URL.
+4. **App start.** All modes have two arguments - mode key and URL.
 * **PARSING**. Parsing of html-page by input url and output statistics. Launch jar by next command:
 ```
 java -jar ./urlstat-1.0-SNAPSHOT-shaded.jar --p https://vk.com
